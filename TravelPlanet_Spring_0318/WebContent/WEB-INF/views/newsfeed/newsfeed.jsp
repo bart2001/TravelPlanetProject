@@ -117,7 +117,7 @@
 							</c:forEach>
 							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap" >
 								<c:if test="${postLikeCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" title="" data-placement="top">${postLikeCountMap.COUNT}</span>									
+									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" title="좋아요를 눌러주세요!" data-placement="top">${postLikeCountMap.COUNT}</span>									
 								</c:if>
 							</c:forEach>
 							<span class="glyphicon glyphicon-comment"></span>
@@ -202,7 +202,7 @@
 <script>
 	$(document).ready(function() {
 				 //좋아요시  좋아요 한사람 툴팁!
-				    $('span[data-toggle="tooltip"]').tooltip();   	
+// 				    $('span[data-toggle="tooltip"]').tooltip();   	
 				 
 				    $('span.post_like_count').mouseover(function() {
 				    	var $this = $(this);
@@ -214,8 +214,12 @@
 				            data: {post_seq: post_seq},
 				            dataType: "text",
 				            success: function(data) {
-				            	
-				            	$("span.post_like_count").attr("title",data);
+				            	if(data == "\n"){
+				            		$("span.post_like_count").attr("title","좋아요를 눌러주세요!");
+// 				            	 $('span[data-toggle="tooltip"]').tooltip('destroy'); 
+				            	}else{
+				            		$("span.post_like_count").attr("title",data);
+				            	}
 				       		},
 				            error: function() {
 				            	alert("좋아요한 id 가져오기 실패");		                	 
