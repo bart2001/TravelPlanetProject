@@ -139,12 +139,12 @@
 										class="hanna-title">
 										<a style="color: white; text-decoration: none;"
 											href="traveldetail.do?travel_seq=${travel.travel_seq}">
-											${travel.title} </a>
+											${travel.title}</a>
 									</h2>
 									<h2 id='customized' align="right"
 										style="color: white; text-shadow: 0 0 1px black; margin-right: -5%"
 										class="hanna-title">${travel.customized == 0?  "Original" : "Customized"}
-									</h2>
+									</h2>									
 								</div>
 								<script type="text/javascript">
 									var randomNumber = Math
