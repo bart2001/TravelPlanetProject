@@ -446,13 +446,22 @@ public class PostController {
 		List<String> likeList = null;
 		likeList = postService.getPostLikeIdBySeq(post_seq);
 		
-		String arr = "\n";
+		String arr = "";
 		System.out.println("like 수: "+likeList.size());
 		for(int i=0; i<likeList.size();i++){
-			arr += (likeList.get(i))+"\n";
+			if (i < likeList.size() - 1) {
+				arr += (likeList.get(i)) +"\n";	
+			} else {
+				arr += (likeList.get(i));	
+			}			
 		}
 		System.out.println("arr "+arr);
 		
-		response.getWriter().print(arr);
+		if(likeList.size()>0){
+			response.getWriter().print(arr);
+		}else{
+			arr = "none";
+			response.getWriter().print(arr);
+		}
 	}
 }
