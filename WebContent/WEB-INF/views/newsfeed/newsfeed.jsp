@@ -39,7 +39,6 @@
 </div>
 <br>
 <div class="container-fluid">
-<<<<<<< .mine
    <div class="row">
 <!--       <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11"> -->
 <!--          <h3 style="display: inline;" class="hanna-title">뉴스피드</h3> -->
@@ -141,109 +140,6 @@
       </c:forEach>
    </div>
    <div id="lastLoader" style="text-align: center;"></div>
-=======
-	<div class="row">
-<!-- 		<div class="col-xs-11 col-sm-11 col-md-11 col-lg-11"> -->
-<!-- 			<h3 style="display: inline;" class="hanna-title">뉴스피드</h3> -->
-<!-- 		</div> -->
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12"
-			style="text-align: right;">
-			<button id="postwrite_btn" type="submit" class="btn btn-info">글쓰기</button>
-		</div>
-	</div>
-	<br>
-	<div class="row" id="myList">
-		<c:forEach var="post" items="${postList}" varStatus="vs">
-			<li class="post" style="list-style: none;">
-				<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 box">
-					<div class="panel panel-default">
-						<div class="panel-heading" style="background-color: #28A8DE;border-color: #28A8DE">
-							<c:forEach var="member" items="${memberList}">
-								<c:if test="${member.id == post.id}">
-									<!-- 회원 개인이 업로드한 이미지가 있는 경우 -->
-									<c:if test="${not empty member.img}">
-										<img src="profileImage/${member.img}" alt="${member.img}"
-											style="width: 30px; height: 30px;" class="img-circle">
-									</c:if>
-									<!-- 회원 개인이 업로드한 이미지가 없는 경우 기본 사람모양 아이콘 활용 -->
-									<c:if test="${empty member.img}">
-										<img src="image/default-user-icon-profile.png"
-											style="width: 30px; height: 30px;" class="img-circle">
-									</c:if>
-								</c:if>
-							</c:forEach>
-							&nbsp;<a style="color: white;" href="mypage.do?id=${post.id}">${post.id}</a>
-							<!-- 로그인한 아이디와 일치할 경우 포스트 삭제 아이콘 보여주기 -->
-							<c:if test="${not empty login}">
-								<!-- 관리자 모드 -->
-								<c:if test="${login.auth == 1}">
-									<span
-										class="glyphicon glyphicon-remove-circle remove-post-icon white"
-										data-post_seq="${post.post_seq}" style="float: right;"></span>
-									<!-- <span style="float: right;" class="glyphicon glyphicon-remove-circle"></span> -->
-								</c:if>
-								<c:if test="${login.auth != 1}">
-									<c:if test="${login.id == post.id}">
-										<span style="float: right;"
-											class="glyphicon glyphicon-remove-circle remove-post-icon white"
-											data-post_seq="${post.post_seq}"></span>
-									</c:if>
-								</c:if>
-							</c:if>
-						</div>
-						<div class="panel-body" onclick="location.href='postdetail.do?post_seq=${post.post_seq}'">
-							<div style="text-decoration: none; color: black;">							
-							<div style="width:340px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis"><b class="hanna-mini-title">${post.title}</b></div>
-							<br>						
-							<c:if test="${not empty post.content}">							
-							<div style="width:340px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${post.content}</div>
-							</c:if>
-							<c:if test="${empty post.content}">				
-								<div style="color: gray; font-weight: lighter;">입력된 내용이 없습니다 </div>						                                                   
-							</c:if>
-							</div>
-						</div>
-						<div class="panel-footer">
-							<span class='glyphicon glyphicon-thumbs-up'></span>
-							<!-- 로그인이 되었을 경우  -->
-							<!-- 좋아요를 눌렀을 경우메나 파란색+진하게 엄지마크 표시하기  -->
-							<c:forEach items="${postLikeList}" var="postLike">
-								<c:if test="${post.post_seq == postLike}">
-									<script type="text/javascript">
-										$("span.glyphicon-thumbs-up").eq(
-												'${vs.index}').css({
-											'color' : 'blue',
-											'font-weight' : 'bold'
-										});
-									</script>
-								</c:if>
-							</c:forEach>
-							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap" >
-								<c:if test="${postLikeCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" data-placement="top">${postLikeCountMap.COUNT}</span>									
-								</c:if>
-							</c:forEach>
-							<span class="glyphicon glyphicon-comment"></span>
-							<c:forEach items="${postAnswerCountMapList}"
-								var="postAnswerCountMap">
-								<c:if test="${postAnswerCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_answer_count">${postAnswerCountMap.COUNT}</span>
-								</c:if>
-							</c:forEach>
-							&nbsp;							
-							<c:if test="${post.budget != 0}">
-								<b>&#8361;</b><fmt:formatNumber value="${post.budget}" type="number" groupingUsed="true"/>
-							</c:if>
-							<span style="float: right;" class="wdate"
-								data-wdate="${post.wdate}">${fn:substring(post.wdate, 0, 16)}</span>
-						</div>
-					</div>
-				</div>
-			</li>
-		</c:forEach>
-	</div>
-	<div id="lastLoader" style="text-align: center;"></div>
->>>>>>> .r1383
 </div>
 <br>
 
