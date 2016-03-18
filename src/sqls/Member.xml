@@ -60,4 +60,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select id, pwd, email, birth, auth, nvl(img, '') as img from members where id=#{id}
 </select>
 
+<select id="getTravelSeqAndImgAndId" resultType="travelplanet.model.TravelSeqAndImgAndIdDTO">
+	select a.travel_seq, a.id, nvl(b.img,'none') as img from (select id, travel_seq, wauth
+	from MEMBERS_AND_TRAVELS where WAUTH = 0) a
+	left outer join (select img, id from members) b
+	on a.id = b.id order by a.travel_seq
+</select>
+
 </mapper>
