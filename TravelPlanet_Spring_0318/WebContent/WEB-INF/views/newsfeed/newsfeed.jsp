@@ -117,7 +117,7 @@
 							</c:forEach>
 							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap" >
 								<c:if test="${postLikeCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" title="좋아요를 눌러주세요!" data-placement="top">${postLikeCountMap.COUNT}</span>									
+									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" data-placement="top">${postLikeCountMap.COUNT}</span>									
 								</c:if>
 							</c:forEach>
 							<span class="glyphicon glyphicon-comment"></span>
