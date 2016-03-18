@@ -88,18 +88,20 @@
 									<c:forEach var="seqAndImgAndId" items="${seqAndImgAndIdList}">
 										<c:if test="${seqAndImgAndId.travel_seq == travel.travel_seq}">
 											<!-- 회원 개인이 업로드한 이미지가 있는 경우 -->
-											<c:if test="${not empty seqAndImgAndId.img}">
+											<c:if test="${seqAndImgAndId.img != 'none'}">
 												<img src="profileImage/${seqAndImgAndId.img}" alt="${seqAndImgAndId.img}"
 													style="width: 30px; height: 30px;" class="img-circle">
 											</c:if>
 											<!-- 회원 개인이 업로드한 이미지가 없는 경우 기본 사람모양 아이콘 활용 -->
-											<c:if test="${empty seqAndImgAndId.img}">
+											<c:if test="${seqAndImgAndId.img == 'none'}">
 												<img src="image/default-user-icon-profile.png"
 													style="width: 30px; height: 30px;" class="img-circle">
 											</c:if>
 										</c:if>
+										<c:if test="${seqAndImgAndId.travel_seq == travel.travel_seq}">									
+										<a style="color: white;" href="mypage.do?id=${seqAndImgAndId.id}">${seqAndImgAndId.id}</a>
+										</c:if>
 									</c:forEach>
-									<a style="color: white;" href="mypage.do?id=${id}">${id}</a>
 									<div style="display: inline-block; float: right;">
 										<c:if test="${login.id == id}">
 											<c:if test="${travel.open == 1 }">
