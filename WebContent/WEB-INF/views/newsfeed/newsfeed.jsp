@@ -35,7 +35,6 @@
 			<button id="answer_list_btn" type="submit" class="btn btn-default">댓글순</button>
 			<button id="like_list_btn" type="submit" class="btn btn-default">좋아요순</button>
 		</div>
-
 	</div>
 </div>
 <br>
@@ -118,10 +117,7 @@
 							</c:forEach>
 							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap" >
 								<c:if test="${postLikeCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_like_count" data-seq="${post.post_seq}">${postLikeCountMap.COUNT}</span>									
-									
-									<span data-toggle="tooltip" title="Hooray!">Hover over me</span>									
-									
+									<span class="post_like_count" data-seq="${post.post_seq}" data-toggle="tooltip" title="" data-placement="top">${postLikeCountMap.COUNT}</span>									
 								</c:if>
 							</c:forEach>
 							<span class="glyphicon glyphicon-comment"></span>
@@ -206,7 +202,28 @@
 <script>
 	$(document).ready(function() {
 				 //좋아요시  좋아요 한사람 툴팁!
-				    $('span[data-toggle="tooltip"]').tooltip();   				 
+				    $('span[data-toggle="tooltip"]').tooltip();   	
+				 
+				    $('span.post_like_count').mouseover(function() {
+				    	var $this = $(this);
+				    	var index = $("span.post_like_count").index(this);				
+				    	var post_seq = $("span.post_like_count").eq(index).data("seq");
+//				      	alert("post_seq : "+post_seq +"index : "+index);
+				       	$.ajax({
+				        	url:'postlikelist.do',		                 
+				            data: {post_seq: post_seq},
+				            dataType: "text",
+				            success: function(data) {
+				            	
+				            	$("span.post_like_count").attr("title",data);
+				       		},
+				            error: function() {
+				            	alert("좋아요한 id 가져오기 실패");		                	 
+				            },
+				        });
+				    });
+				 
+				 
 				
 				/* 로그인하지 않은 상태일때  -> 로그인 모달 띄우기 */
 				$("#postwrite_btn").click(function() {
@@ -334,33 +351,6 @@
 	                       }
 	                   }
 					});
-				
-				
-				
-				
-				
-				
-				$('.post_like_count').tooltip({title: "Hooray", placement: "top"});  
-				$('span.post_like_count').mouseover(function() {
-					var $this = $(this);
-					var index = $("span.post_like_count").index(this);				
-					var post_seq = $("span.post_like_count").eq(index).data("seq");
-//				  	alert("post_seq : "+post_seq +"index : "+index);
-				   	$.ajax({
-				    	url:'postlikelist.do',		                 
-				        data: {post_seq: post_seq},
-				        dataType: "text",
-				        success: function(data) {
-				        	var list = data.split("id");
-				        	
-//				         	alert(data);
-				        	$("span#like").eq(index).html(data);
-				   		},
-				        error: function() {
-				        	alert("좋아요한 id 가져오기 실패");		                	 
-				        },
-				    });
-				});
 			});
 </script>
 
@@ -468,4 +458,3 @@
 				});
 	</script>
 </c:if>
-
