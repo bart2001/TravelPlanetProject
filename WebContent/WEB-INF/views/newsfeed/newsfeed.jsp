@@ -116,9 +116,12 @@
 									</script>
 								</c:if>
 							</c:forEach>
-							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap">
+							<c:forEach items="${postLikeCountMapList}" var="postLikeCountMap" >
 								<c:if test="${postLikeCountMap.POST_SEQ == post.post_seq}">
-									<span class="post_like_count" data-seq="${post.post_seq}">${postLikeCountMap.COUNT}</span>
+									<span class="post_like_count" data-seq="${post.post_seq}">${postLikeCountMap.COUNT}</span>									
+									
+									<span data-toggle="tooltip" title="Hooray!">Hover over me</span>									
+									
 								</c:if>
 							</c:forEach>
 							<span class="glyphicon glyphicon-comment"></span>
@@ -201,8 +204,10 @@
 </div>
 
 <script>
-	$(document).ready(
-			function() {
+	$(document).ready(function() {
+				 //좋아요시  좋아요 한사람 툴팁!
+				    $('span[data-toggle="tooltip"]').tooltip();   				 
+				
 				/* 로그인하지 않은 상태일때  -> 로그인 모달 띄우기 */
 				$("#postwrite_btn").click(function() {
 					if ('${login.id}' == null || '${login.id}' == '') {
