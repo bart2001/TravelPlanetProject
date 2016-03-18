@@ -200,44 +200,44 @@
 </div>
 
 <script>
-	$(document).ready(function() {
-				 //좋아요시  좋아요 한사람 툴팁!
- 				    //$('span[data-toggle="tooltip"]').tooltip();   	
-				 
-				    $('span.post_like_count').mouseover(function() {
-				    	var $this = $(this);
-				    	var index = $("span.post_like_count").index(this);				
-				    	var post_seq = $("span.post_like_count").eq(index).data("seq");
-//				      	alert("post_seq : "+post_seq +"index : "+index);
-				       	$.ajax({
-				        	url:'postlikelist.do',		                 
-				            data: {post_seq: post_seq},
-				            dataType: "text",
-				            success: function(data) {
-				            	if(data == "none"){
-				            		$("span.post_like_count").attr("title","좋아요를 눌러주세요!");
-//  				            		//$('span[data-toggle="tooltip"]').tooltip('destroy'); 
-				            	}else{
-				            		$("span.post_like_count").attr("title",data);
-				            	}
-				       		},
-				            error: function() {
-				            	alert("좋아요한 id 가져오기 실패");		                	 
-				            },
-				        });
-				    });
-				 
-				 
-				
-				/* 로그인하지 않은 상태일때  -> 로그인 모달 띄우기 */
-				$("#postwrite_btn").click(function() {
-					if ('${login.id}' == null || '${login.id}' == '') {
-						$("#login_Modal").modal();
-						/* 로그인했을 때 -> 글쓰기 모달 띄우기 */
-					} else {
-						$("#postwrite_Modal").modal();
-					}
-				});
+   $(document).ready(function() {
+             //좋아요시  좋아요 한사람 툴팁!
+                 //$('span[data-toggle="tooltip"]').tooltip();      
+             
+                $('span.post_like_count').mouseover(function() {
+                   var $this = $(this);
+                   var index = $("span.post_like_count").index(this);            
+                   var post_seq = $("span.post_like_count").eq(index).data("seq");
+//                     alert("post_seq : "+post_seq +"index : "+index);
+                      $.ajax({
+                       url:'postlikelist.do',                       
+                        data: {post_seq: post_seq},
+                        dataType: "text",
+                        success: function(data) {
+                           if(data == "none"){
+                              $("span.post_like_count").attr("title","좋아요를 눌러주세요!");
+//                                //$('span[data-toggle="tooltip"]').tooltip('destroy'); 
+                           }else{
+                              $("span.post_like_count").attr("title",data);
+                           }
+                         },
+                        error: function() {
+                           alert("좋아요한 id 가져오기 실패");                          
+                        },
+                    });
+                });
+             
+             
+            
+            /* 로그인하지 않은 상태일때  -> 로그인 모달 띄우기 */
+            $("#postwrite_btn").click(function() {
+               if ('${login.id}' == null || '${login.id}' == '') {
+                  $("#login_Modal").modal();
+                  /* 로그인했을 때 -> 글쓰기 모달 띄우기 */
+               } else {
+                  $("#postwrite_Modal").modal();
+               }
+            });
 
             // 댓글많은순으로 정렬
             $("#answer_list_btn").click(
