@@ -449,7 +449,7 @@ public class PostController {
 		String arr = "";
 		System.out.println("like 수: "+likeList.size());
 		for(int i=0; i<likeList.size();i++){
-			arr += "id"+(likeList.get(i));
+			arr += (likeList.get(i))+",";
 		}
 		
 		
