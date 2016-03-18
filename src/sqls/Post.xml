@@ -155,6 +155,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 select max(post_seq) from posts where del = 0
 </select>
 
+
+
 </mapper>
 
 

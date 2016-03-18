@@ -174,7 +174,12 @@ left outer join (select count(*) as count, id from members_and_travels group by 
 on m.id = t.id
 </select>
 
-
+<select id="getTravelSeqAndImgAndId" resultType="travelplanet.model.TravelSeqAndImgAndIdDTO">
+	select a.travel_seq as travel_seq, a.id as id, nvl(b.img,'none') as img from (select id, travel_seq, wauth
+	from MEMBERS_AND_TRAVELS where WAUTH = 0) a
+	left outer join (select img, id from members) b
+	on a.id = b.id order by a.travel_seq
+</select>
 
 
 </mapper>
