@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Post"> 
+	<insert id="writePost" parameterType="travelplanet.model.PostDTO" >
+		insert into posts (post_seq,id,title,content,wdate,edate,budget,del)
+		values (seq_posts.nextval,#{id},#{title},#{content},sysdate,sysdate,${budget},0) 
+	</insert>
+	
+	<select id="getPostList" resultType="travelplanet.model.PostDTO">
+	<!-- 정규표현식 사용해서 html태그 제거하기 -->
+		select
+		post_seq, id, title,
+		 nvl(regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>), '') as content,
+<!-- 		regexp_replace(dbms_lob.substr(content, 100), <![CDATA['<[^>]*>|\&([^;])*;']]>), '') as content, -->
+		wdate, edate, budget, del
+		from posts
+		where del = 0 order by wdate desc		
+<!-- 		select post_seq, id, title, nvl(regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>), '') as content, -->
+<!-- 		wdate, edate, budget, del -->
+<!-- 		from posts -->
+<!-- 		where del = 0 order by wdate desc		 -->
+	</select>
+	
+	<select id="getPostListbyId" parameterType="String" resultType="travelplanet.model.PostDTO">
+		select post_seq, id, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+		wdate, edate, budget, del 
+		from posts where id = #{id} and del = 0
+	</select>
+	
+	<select id="getPostLikeListByID" parameterType="String" resultType="int">
+	select post_seq from post_likes where id = #{id}
+	</select>
+	
+	<select id="searchPostListbyId" parameterType="String" resultType="travelplanet.model.PostDTO">
+		select post_seq, id, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+		wdate, edate, budget, del  
+		from posts where id like '%' || #{id} || '%' and del = 0 
+	</select>
+	
+	<select id="searchPostListbyContent" parameterType="String" resultType="travelplanet.model.PostDTO">
+		select post_seq, id, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+		wdate, edate, budget, del
+		from posts where regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) like '%' || #{content} || '%' and del = 0
+	</select>
+	
+	<select id="searchPostListbyTitle" parameterType="String" resultType="travelplanet.model.PostDTO">
+		select post_seq, id, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+		wdate, edate, budget, del
+		from posts where title like '%' || #{title} || '%' and del = 0
+	</select>
+
+	<select id="getPostAnswerCounMapList" resultType="map">
+		select nvl(count, 0) as count, a.post_seq as post_seq
+		from (select * from POSTS where del = 0) a
+		left outer join (select count(*) as count, post_seq from (select * from POST_ANSWERS where del = 0) group by post_seq) b
+		on a.post_seq = b.post_seq
+	</select>
+
+	<select id="getPostLikeCounMapList" resultType="map">
+		select
+		nvl(count, 0) as count, a.post_seq as post_seq
+		from (select * from
+		posts where del = 0) a
+		left outer join (select count(*) as count, post_seq from post_likes
+		group by post_seq) b
+		on a.post_seq = b.post_seq
+	</select>
+	
+	<select id="getPost" parameterType="Integer" resultType="travelplanet.model.PostDTO">
+		select * from posts where post_seq = #{post_seq}
+	</select>
+
+	<select id="getAnswerList" parameterType="Integer" resultType="travelplanet.model.PostAnswerDTO">
+		select * from post_answers where post_seq = #{post_seq} and del = 0 order by wdate desc
+	</select>
+
+	<update id="updatePost" parameterType="travelplanet.model.PostDTO" >
+		update posts set title = #{title}, content = #{content} , edate = sysdate , budget = #{budget}
+		where post_seq = #{post_seq}		
+	</update>
+
+<!-- 	<update id="updatePostDelete" parameterType="travelplanet.model.PostDTO" > -->
+	<update id="updatePostDelete" parameterType="travelplanet.model.PostDTO" >
+		update posts set del = 1 where post_seq = #{post_seq}
+	</update>
+	
+	<insert id="writeAnswer" parameterType="travelplanet.model.PostAnswerDTO" >
+		insert into post_answers 
+		values (seq_post_answers.nextval, #{post_seq}, #{id}, #{content}, sysdate, sysdate, 0)	
+	</insert>
+	
+	<update id="updateAnswer" parameterType="travelplanet.model.PostAnswerDTO" >
+		update post_answers set content = #{content}, edate = sysdate where post_answer_seq = #{post_answer_seq}
+	</update>
+	
+<!-- 	<update id="updatePostAnswerDelete" parameterType="Integer"> -->
+	<update id="updatePostAnswerDelete"  parameterType="Integer">
+		update post_answers set del = 1 where post_answer_seq = #{post_answer_seq}
+	</update>
+	
+	<insert id="addPostLike" parameterType="travelplanet.model.PostLikeDTO" >
+		insert into post_likes (post_seq, id) values (#{post_seq}, #{id})
+	</insert>
+	
+	<delete id="deletePostLike" parameterType="travelplanet.model.PostLikeDTO" >
+		delete post_likes where id = #{id} and post_seq = #{post_seq}
+	</delete>
+	
+	<delete id="deletePostLikebyId" parameterType="String" >
+		delete post_likes where id = #{id}
+	</delete>
+	
+	<delete id="deletePostAnswerbyId" parameterType="String" >
+		delete post_answers where id = #{id}
+	</delete>
+	
+	<delete id="deletePostbyId" parameterType="String" >
+		delete posts where id = #{id}
+	</delete>
+	
+	<select id="getPostLikeIdBySeq" parameterType="Integer" resultType="String">
+		select id from post_likes where post_seq = #{post_seq}
+	</select>
+	
+	<delete id="deleteMember" parameterType="String" >
+		delete members where id = #{id}
+	</delete>
+	
+	<!-- 회원탈퇴용(해당회원이 작성한 포스트번호 모두 가져오기) -->
+	<select id="getPostSeqListbyID" parameterType="String" resultType="int">
+		select post_seq from posts where id = #{id}
+	</select>
+	
+	<!-- 회원탈퇴용(특정 게시물에 달려있는 댓글들 모두 삭제하기) -->
+	<delete id="deletePostAnswerbyPostSeq" parameterType="int" >
+		delete post_answers where post_seq = #{post_seq}
+	</delete>
+	
+	<!-- 회원탈퇴용(특정 게시물에 달려있는 좋아요들 모두 삭제하기) -->
+	<delete id="deletePostLikebyPostSeq" parameterType="int" >
+		delete post_likes where post_seq = #{post_seq}
+	</delete>	
+	
+	
+	<select id="getPostAnswerCountAndId" resultType="map">
+	select m.id as id, nvl(p.count, 0) as count from members m
+ 	left outer join (select count(*) as count, id from posts group by id) p
+	on m.id = p.id
+	</select>
+
+<select id = "getLastPostSeq" resultType="int">
+select max(post_seq) from posts where del = 0
+</select>
+
+</mapper>
+
+
+
+

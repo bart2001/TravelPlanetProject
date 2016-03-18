@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Travel"> 
+
+<select id="getTravelList" resultType="travelplanet.model.TravelDTO">
+	<!-- 정규표현식 사용해서 html 태그 제거하기 -->
+	select
+	travel_seq, title,open, done, members, region, wdate, edate, budget,
+	 del, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content, customized
+	from travels where del = 0 and open = 0 order by wdate desc
+</select>
+
+<select id="getTravelLikeCountMapList" resultType="map">
+	select nvl(count, 0) as count, a.travel_seq as travel_seq
+	from (select * from travels where del = 0) a
+  	left outer join (select count(*) as count, travel_seq from travel_likes group by travel_seq) b
+  	on a.travel_seq = b.travel_seq		
+</select>
+
+<select id="getTravelAnswerCountMapList" resultType="map">
+	select nvl(count, 0) as count, a.travel_seq as travel_seq
+	from (select * from TRAVELS where del = 0) a
+	left outer join (select count(*) as count, travel_seq from (select * from TRAVEL_ANSWERS where del = 0) group by travel_seq) b
+	on a.travel_seq = b.travel_seq		
+</select>
+
+<select id="getMyTravelList" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select t.travel_seq as travel_seq, t.title as title,
+	regexp_replace(t.content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	t.open as open, t.done as done, t.members as members,
+	 t.region as region, t.wdate as wdate, t.edate as edate, t.budget as budget, t.customized as customized, m.wauth as wauth, m.id as id  
+	 from travels t, members_and_travels m where t.travel_seq = m.travel_seq and m.id = #{id} and del = 0	
+</select>
+
+<select id="getTravelListbyId" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select t.travel_seq as travel_seq, t.title as title,	
+	regexp_replace(t.content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	t.open as open, t.done as done, t.members as members,
+	t.region as region, t.wdate as wdate, t.edate as edate, t.budget as budget,  t.customized as customized, m.wauth as wauth, m.id as id 
+	from travels t, members_and_travels m 
+	where t.travel_seq = m.travel_seq and m.id = #{parameterID} and del = 0 and open = 0
+</select>
+
+<select id="getTravelLikeListByID" resultType="int" parameterType="String">
+	select travel_seq		
+	from travel_likes where id = #{id}	
+</select>
+
+<select id="searchTravelListbyId" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select
+	travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	open, done, members, region, wdate, edate, budget, del, customized
+	from travels where travel_seq in  (select travel_seq from members_and_travels 
+	where ID like '%' || #{id} || '%' and wauth = 0) and del = 0 and open = 0 
+</select>
+
+<select id="searchTravelListbyTitle" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select
+	travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	open, done, members, region, wdate, edate, budget, del, customized
+	from travels where title like '%' || #{title} || '%' and del = 0 and open = 0
+</select>
+
+<select id="searchTravelListbyContent" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select
+	travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	open, done, members, region, wdate, edate, budget, del, customized
+	from travels where regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) like '%' || #{content} || '%' and del = 0 and open = 0
+</select>
+
+<select id="searchTravelListbyRegion" resultType="travelplanet.model.TravelDTO" parameterType="String">
+	select travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	open, done, members, region, wdate, edate, budget, del, customized
+	from travels where region = #{region} and del = 0 and open = 0 	
+</select>
+
+<select id="getTravel" resultType="travelplanet.model.TravelDTO" parameterType="int">
+	select travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	open, done, members, region, wdate, edate, budget, del, customized from travels where travel_seq = #{travel_seq}
+</select>
+
+<select id="getAnswerList" resultType="travelplanet.model.TravelAnswerDTO" parameterType="int">
+	select * from travel_answers where travel_seq = #{travel_seq} and del = 0 order by wdate desc
+</select>
+
+<insert id = "createTravel" parameterType="travelplanet.model.TravelDTO">
+	insert into travels (travel_seq, title, content, open, done, members, region, wdate, edate, del, budget, customized) 
+	values (seq_travels.nextval, #{title}, #{content}, 0, #{done}, #{members}, #{region}, sysdate, sysdate, 0, 0, #{customized}) 
+</insert>
+
+<select id = "getLastTravelSeq" resultType="int">
+	select max(travel_seq) from travels where del = 0
+</select>
+
+<!-- <update id = "updateTraveldelete" parameterType="int"> -->
+<update id = "updateTravelDelete" parameterType="int">
+	update travels set del = 1 where travel_seq = #{travel_seq}
+</update>
+
+<update id = "updateTravel" parameterType="travelplanet.model.TravelDTO">
+	update travels set title = #{title}, content = #{content}, done = #{done}, members = #{members}, region = #{region}, budget = #{budget}
+	where travel_seq = #{travel_seq}
+</update>
+
+<insert id = "writeAnswer" parameterType="travelplanet.model.TravelAnswerDTO">
+	insert into travel_answers values (SEQ_TRAVEL_ANSWERS.nextval, #{travel_seq},#{id}, #{content}, sysdate, sysdate, 0)
+</insert>
+
+<update id = "updateAnswer" parameterType="travelplanet.model.TravelAnswerDTO">
+	update travel_answers set content = #{content}, edate = sysdate where travel_answer_seq = #{travel_answer_seq }
+</update>
+
+<!-- <update id = "updateTravelAnswerDelete" parameterType="int"> -->
+<update id = "updateTravelAnswerDelete" parameterType="int">
+	update travel_answers set del = 1 where travel_answer_seq = #{travel_answer_seq}
+</update>
+
+<insert id = "addTravelLike" parameterType="travelplanet.model.TravelLikeDTO">
+	insert into travel_likes (id, travel_seq) values (#{id}, #{travel_seq})
+</insert>
+
+<delete id = "deleteTravelLike" parameterType="travelplanet.model.TravelLikeDTO">
+delete travel_likes where id = #{id} and travel_seq = #{travel_seq}
+</delete>
+
+<update id = "openTravel" parameterType="int">
+UPDATE TRAVELS  SET OPEN =  CASE  WHEN (OPEN = 0) THEN 1 ELSE 0 END WHERE TRAVEL_SEQ = #{travel_seq}
+</update>
+
+<select id = "getTotalTravelCount" resultType="int">
+select count(*) from travels
+</select>
+
+
+<delete id="deleteTravelLikebyId" parameterType="String" >
+delete travel_likes where id = #{id}
+</delete>
+
+<delete id="deleteTravelAnswerbyId" parameterType="String" >
+		delete travel_answers where id = #{id}
+</delete>
+
+<delete id="deleteTravelEventbyId" parameterType="String" >
+ delete events where travel_seq in 
+ (select travel_seq from members_and_travels where id = #{id} and wauth = 0) 
+</delete>
+
+
+<select id="getTravelSeqbyIDandWauth" resultType="int" parameterType="String">
+	select travel_seq from members_and_travels where id = #{id} and wauth = 0
+</select>
+
+
+<delete id="deleteTravelbyTravelSeq" parameterType="int" >
+	delete travels where travel_seq = #{travel_seq}
+</delete>
+	
+<!-- 회원탈퇴용(특정 여행일정에 달려있는 댓글들 모두 삭제하기) -->
+<delete id="deleteTravelAnswerbyTravelSeq" parameterType="int">
+delete travel_answers where travel_seq = #{travel_seq}
+</delete>
+	
+<!-- 회원탈퇴용(특정 여행일정에 달려있는 좋아요들 모두 삭제하기) -->
+<delete id="deleteTravelLikebyTravelSeq" parameterType="int" >
+	delete travel_likes where travel_seq = #{travel_seq}
+</delete>
+
+<select id="getTravelCountAndId" resultType="map">
+select m.id as id, nvl(t.count, 0) as count from members m
+left outer join (select count(*) as count, id from members_and_travels group by id) t
+on m.id = t.id
+</select>
+
+
+
+
+</mapper>
