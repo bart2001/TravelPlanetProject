@@ -191,11 +191,11 @@
             <div class="panel-body">
 
                <div class="form-group update" style="width:100%">
-                  <label for="usr">title:</label> <input type="text"
+                  <label for="usr">여행 제목</label> <input type="text"
                      class="form-control" id="current_title" value="${travel.title}"
                      placeholder="일정에 대한 간단한 설명">
                   <div class="form-group update" style="width:100%">
-                     <label for="comment">Content:</label>
+                     <label for="comment">여행 내용</label>
                      <div id="current_content">${travel.content}</div>
                      <!--             <textarea class="form-control" rows="5" id="current_content" -->
                      <%--                placeholder="일정에 대한 자세한 설명">${travel.content}</textarea> --%>
