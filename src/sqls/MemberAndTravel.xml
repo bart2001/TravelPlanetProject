@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberAndTravel">
+	<select id="getMemberAndTravelList" resultType="travelplanet.model.MemberAndTravelDTO">
+		select * from members_and_travels where wauth = 0
+	</select>
+
+	<select id="getMemberAndTravelListbyTravelSeq" resultType="travelplanet.model.MemberAndTravelDTO"
+		parameterType="int">
+		select * from members_and_travels where travel_seq = #{travel_seq}
+	</select>
+
+	<insert id="addMemberAndTravel" parameterType="travelplanet.model.MemberAndTravelDTO">
+		insert into members_and_travels (id, travel_seq, wauth)
+		values (#{id}, #{travel_seq}, 	0)
+	</insert>
+
+	<delete id="deleteMemberAndTravel" parameterType="String">
+		delete members_and_travels where id = #{id}
+	</delete>
+	
+	<delete id="exitFromMemberAndTravel" parameterType="travelplanet.model.MemberAndTravelDTO">
+		delete members_and_travels where id = #{id} and travel_seq =#{travel_seq}
+	</delete>
+
+	<insert id="inviteAddMemberAndTravel" parameterType="travelplanet.model.MemberAndTravelDTO">
+		insert into members_and_travels (id, travel_seq, wauth)
+		values (#{id}, #{travel_seq}, 1)
+	</insert>
+
+
+	<delete id="deleteMemberAndTravelbyTravelSeqAndWauth" parameterType="String">
+		delete members_and_travels where travel_seq = #{travel_seq} and wauth = 0
+	</delete>
+
+</mapper>

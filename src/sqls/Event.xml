@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Event"> 
+
+<select id="getEventList" parameterType="int" resultType="travelplanet.model.EventDTO">
+	select event_seq, travel_seq, title, start_time, end_time, lat, lng, wdate from events where travel_seq = #{travel_seq} order by start_time
+</select>
+
+<delete id ="deleteEvent" parameterType="int">
+delete events where travel_seq = #{travel_seq}
+</delete>
+
+
+<insert id="addEvent" parameterType="travelplanet.model.EventDTO">
+ insert into events (event_seq, travel_seq, title, start_time, end_time, lat, lng, wdate)  
+ values(seq_events.nextval, #{travel_seq}, #{title}, 
+  TO_DATE(#{start_time}, 'yyyyMMddhh24miss'), TO_DATE(#{end_time}, 'yyyyMMddhh24miss'),
+   #{lat}, #{lng}, sysdate)
+</insert>
+
+</mapper>

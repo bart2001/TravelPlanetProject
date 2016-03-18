@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Member"> 
+	
+<select id="loginCheck" parameterType="travelplanet.model.MemberDTO" resultType="travelplanet.model.MemberDTO">
+	select * from members 
+	where id=#{id} and pwd=#{pwd}
+</select>
+
+<select id="login" parameterType="travelplanet.model.MemberDTO" resultType="travelplanet.model.MemberDTO">
+	select * from members 
+	where id=#{id} and pwd=#{pwd}
+</select>
+
+<select id="checkId" parameterType="String" resultType="String">
+	select id from members where id = #{id}	
+</select>
+
+<insert id="addMember" parameterType="travelplanet.model.MemberDTO">
+	insert into members
+	(id, pwd, email, birth, sex, auth, img)
+	values(#{id}, #{pwd}, #{email}, #{birth}, #{sex}, 0, null)
+</insert>
+
+<select id="checkPwd" parameterType="String" resultType="String">
+	select pwd from members where id=#{id}
+</select>
+
+<update id="updateMember" parameterType="travelplanet.model.MemberDTO">
+	update members set pwd=#{pwd}, email=#{email} 
+	where id=#{id}
+</update> 
+
+<delete id="deleteMember" parameterType="String">
+	delete members where id = #{id}
+</delete> 
+
+<update id="addImage" parameterType="travelplanet.model.MemberDTO">
+	update members set img=#{img} 
+	where id=#{id}
+</update> 
+
+<select id="getImage" parameterType="String" resultType="String">
+	select nvl(img, '') as img from members 
+	where id = #{id}
+</select> 
+
+<select id="getMemberList" resultType="travelplanet.model.MemberDTO">
+	select id, pwd, email, birth, auth, nvl(img, '') as img from members
+</select>
+
+<select id="getTotalMemberCount" resultType="int">
+	select count(*) from members
+</select>
+
+<select id="getMemberById" resultType="travelplanet.model.MemberDTO" parameterType="String">
+	select id, pwd, email, birth, auth, nvl(img, '') as img from members where id=#{id}
+</select>
+
+</mapper>
