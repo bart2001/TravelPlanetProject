@@ -49,7 +49,7 @@
 					<div class="input-group">
 						<div class="input-group-addon">여행경비</div>
 						<input type="number" min="0" class="form-control"
-							value="${post.budget}">
+							value="${post.budget}" readonly="readonly">
 						<div class="input-group-addon">KRW</div>
 					</div>
 				</div>

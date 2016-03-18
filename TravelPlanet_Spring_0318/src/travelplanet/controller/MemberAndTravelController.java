@@ -77,7 +77,7 @@ public class MemberAndTravelController {
 			String mail_from = "ssittravelmate@gmail.com";
 			String mail_to = email;
 			String title = name + "님이 당신을 TravelMate로 초대합니다.";
-			String contents = "함께하시겠습니까 ?" + "<a href = http://localhost:8090/SpringSamAll/main.do?invite_seq="
+			String contents = "함께하시겠습니까 ?" + "<a href = http://211.238.142.165:8090/SpringSamAll/main.do?invite_seq="
 					+ invite_seq + ">" + "링크로 이동" + "</a>";
 
 			mail_from = new String(mail_from.getBytes("UTF-8"), "UTF-8");
