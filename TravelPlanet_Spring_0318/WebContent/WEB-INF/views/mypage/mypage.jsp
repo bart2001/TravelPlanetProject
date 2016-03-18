@@ -85,15 +85,15 @@
 						<div class="col-sm-4">
 							<div class="panel panel-default">
 								<div class="panel-heading" style="background-color: #28A8DE;border-color: #28A8DE">
-									<c:forEach var="member" items="${memberList}">
-										<c:if test="${member.id == id}">
+									<c:forEach var="seqAndImgAndId" items="${seqAndImgAndIdList}">
+										<c:if test="${seqAndImgAndId.travel_seq == travel.travel_seq}">
 											<!-- 회원 개인이 업로드한 이미지가 있는 경우 -->
-											<c:if test="${not empty member.img}">
-												<img src="profileImage/${member.img}" alt="${member.img}"
+											<c:if test="${not empty seqAndImgAndId.img}">
+												<img src="profileImage/${seqAndImgAndId.img}" alt="${seqAndImgAndId.img}"
 													style="width: 30px; height: 30px;" class="img-circle">
 											</c:if>
 											<!-- 회원 개인이 업로드한 이미지가 없는 경우 기본 사람모양 아이콘 활용 -->
-											<c:if test="${empty member.img}">
+											<c:if test="${empty seqAndImgAndId.img}">
 												<img src="image/default-user-icon-profile.png"
 													style="width: 30px; height: 30px;" class="img-circle">
 											</c:if>

@@ -13,6 +13,7 @@ import travelplanet.dao.TravelDAO;
 import travelplanet.model.TravelAnswerDTO;
 import travelplanet.model.TravelDTO;
 import travelplanet.model.TravelLikeDTO;
+import travelplanet.model.TravelSeqAndImgAndIdDTO;
 import travelplanet.service.TravelService;
 @Service
 public class TravelServiceImpl implements TravelService {
@@ -200,5 +201,8 @@ public class TravelServiceImpl implements TravelService {
 		return travelDAO.deleteTravelLikebyTravelSeq(travel_seq);
 	}
 	
-	
+	@Override
+	public List<TravelSeqAndImgAndIdDTO> getTravelSeqAndImgAndId() throws Exception {
+		return travelDAO.getTravelSeqAndImgAndId();
+	}
 }

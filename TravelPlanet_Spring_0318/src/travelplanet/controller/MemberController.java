@@ -40,6 +40,7 @@ import travelplanet.model.MemberAndTravelDTO;
 import travelplanet.model.MemberDTO;
 import travelplanet.model.PostDTO;
 import travelplanet.model.TravelDTO;
+import travelplanet.model.TravelSeqAndImgAndIdDTO;
 import travelplanet.service.MemberAndTravelService;
 import travelplanet.service.MemberService;
 import travelplanet.service.PostService;
@@ -335,6 +336,10 @@ public class MemberController {
 		memberList = memberService.getMemberList();
 		model.addAttribute("memberList", memberList);
 
+		List<TravelSeqAndImgAndIdDTO> seqAndImgAndIdList = null;
+		seqAndImgAndIdList = travelService.getTravelSeqAndImgAndId();
+		model.addAttribute("seqAndImgAndIdList", seqAndImgAndIdList);
+		
 		return "mypage/mypage";
 	}
 

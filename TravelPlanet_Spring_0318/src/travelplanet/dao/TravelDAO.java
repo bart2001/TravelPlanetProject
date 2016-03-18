@@ -16,6 +16,7 @@ import travelplanet.model.PostLikeDTO;
 import travelplanet.model.TravelAnswerDTO;
 import travelplanet.model.TravelDTO;
 import travelplanet.model.TravelLikeDTO;
+import travelplanet.model.TravelSeqAndImgAndIdDTO;
 
 @Repository
 public class TravelDAO {
@@ -254,5 +255,11 @@ public class TravelDAO {
 	public boolean deleteTravelLikebyTravelSeq(int travel_seq) throws Exception {
 		sqlSession.delete(nameSpace + "deleteTravelLikebyTravelSeq", travel_seq);
 		return true;
+	}
+	
+	public List<TravelSeqAndImgAndIdDTO> getTravelSeqAndImgAndId() throws Exception {
+		List<TravelSeqAndImgAndIdDTO> travelSeqAndImgAndIdList = null; 
+		travelSeqAndImgAndIdList = sqlSession.selectList(nameSpace+"getTravelSeqAndImgAndId");
+		return travelSeqAndImgAndIdList;
 	}
 }

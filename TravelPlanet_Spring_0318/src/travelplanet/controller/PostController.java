@@ -96,7 +96,7 @@ public class PostController {
 		memberList = memberService.getMemberList();
 		System.out.println("newsfeed.do memberList.size() = " + memberList.size());
 		model.addAttribute("memberList", memberList);
-
+		
 		return "newsfeed/newsfeed";
 	}
 	// -------------------NewsfeedController 끝-------------------------
@@ -437,5 +437,24 @@ public class PostController {
 		
 	}
 	// -------------------PostLikeUpController 끝-------------------------
-	
+
+	@RequestMapping(value = "postlikelist.do", method = { RequestMethod.GET, RequestMethod.POST })
+	public void postlikelist(Model model, HttpServletRequest request, HttpServletResponse response, int post_seq,
+			HttpSession session) throws Exception {
+		logger.info("Welcome PostController postlikelost.do! " + new Date());
+		
+		List<String> likeList = null;
+		likeList = postService.getPostLikeIdBySeq(post_seq);
+		
+		String arr = "";
+		System.out.println("like 수: "+likeList.size());
+		for(int i=0; i<likeList.size();i++){
+			arr += "id"+(likeList.get(i));
+		}
+		
+		
+		System.out.println("arr "+arr);
+		
+		response.getWriter().print(arr);
+	}
 }

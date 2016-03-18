@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import travelplanet.model.TravelAnswerDTO;
 import travelplanet.model.TravelDTO;
 import travelplanet.model.TravelLikeDTO;
+import travelplanet.model.TravelSeqAndImgAndIdDTO;
 
 
 public interface TravelService {
@@ -57,4 +58,8 @@ public interface TravelService {
 	public List<Map<Object, Object>> getTravelCountAndId()throws Exception;
 	
 	public boolean deleteTravelLikebyTravelSeq(int travel_seq)throws Exception;
+	
+	
+	
+	public List<TravelSeqAndImgAndIdDTO> getTravelSeqAndImgAndId()throws Exception;
 }
