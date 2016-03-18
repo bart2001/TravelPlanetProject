@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 </select>
 
 <select id="getTravel" resultType="travelplanet.model.TravelDTO" parameterType="int">
-	select travel_seq, title, regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>) as content,
+	select travel_seq, title, nvl(regexp_replace(content, <![CDATA['<[^>]*>|\&([^;])*;']]>), ' ') as content,
 	open, done, members, region, wdate, edate, budget, del, customized from travels where travel_seq = #{travel_seq}
 </select>
 

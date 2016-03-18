@@ -131,9 +131,10 @@
 								<c:if test="${not empty travel.content}">				
 								<div style="width:340px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis">${travel.content}</div>
 								</c:if>
-								<c:if test="${empty travel.content}">				
+								<c:if test="${empty travel.content || travel.content == ' '}">				
 									<div style="color: gray; font-weight: lighter;">입력된 내용이 없습니다 </div>						                                                   
 								</c:if>
+					
 							</div>						
 						</div>
 																														
