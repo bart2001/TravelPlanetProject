@@ -46,7 +46,7 @@ public class MemberAndTravelController {
 
 		public PasswordAuthentication getPasswordAuthentication() {
 			String username = "ssittravelmate@gmail.com";
-			String password = "ehrwowkquddn"; // 독재자병우
+			String password = // 패스워드
 			return new PasswordAuthentication(username, password);
 		}
 	}
